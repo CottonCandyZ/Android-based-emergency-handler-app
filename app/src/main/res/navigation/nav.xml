@@ -8,6 +8,14 @@
     <fragment
         android:id="@+id/showFragment"
         android:name="com.example.emergencyhandler.ui.ShowFragment"
-        android:label="fragment_show"
-        tools:layout="@layout/fragment_show" />
+        android:label="呼救"
+        tools:layout="@layout/fragment_show">
+        <action
+            android:id="@+id/action_showFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.emergencyhandler.ui.InfoFragment"
+        android:label="详细信息" />
 </navigation>

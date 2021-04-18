@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">EmergencyHandler</string>
+    <string name="app_name">呼救处理</string>
+    <string name="info_add_real_name_hint">真实姓名</string>
+    <string name="info_add_birth_hint">出生年月</string>
+    <string name="info_add_sex_hint">性别</string>
+    <string name="info_add_phone_hint">手机号</string>
+    <string name="info_add_weight_hint">体重(kg)</string>
+    <string name="info_add_blood_type_hint">血型</string>
+    <string name="info_add_relationship">关系</string>
+    <string name="info_add_family_phone_hint">手机</string>
+    <string name="info_add_medical_conditions_hint">医疗状况</string>
+    <string name="info_add_medical_notes_hint">病例备注</string>
+    <string name="info_add_allergy_hint">过敏反应</string>
+    <string name="info_add_medications_hint">用药</string>
+    <string name="info_add_address_hint">常住地</string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.emergencyhandler.databinding.FragmentShowBinding
 import com.example.emergencyhandler.model.MyViewModel
+import com.example.emergencyhandler.showMessage
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -45,6 +46,28 @@ class ShowFragment : Fragment() {
                 )
             }
 
+            swipeRefresh.setOnRefreshListener {
+                myViewModel.refreshManually()
+            }
+
+            myViewModel.status.observe(viewLifecycleOwner) {
+                when (it) {
+                    MyViewModel.STATUS.FETCH_SUCCESS -> {
+                    }
+                    MyViewModel.STATUS.FETCH_ERROR -> {
+                        showMessage(requireContext(), myViewModel.errorMessage)
+                    }
+                    MyViewModel.STATUS.REFRESH_COMPLETE -> {
+                        swipeRefresh.isRefreshing = false
+                    }
+                    MyViewModel.STATUS.REFRESH_ERROR -> {
+                        swipeRefresh.isRefreshing = false
+                        showMessage(requireContext(), myViewModel.errorMessage)
+                    }
+                    null -> {
+                    }
+                }
+            }
             myViewModel.call.observe(viewLifecycleOwner) {
                 showCallInfoAdapter.submitList(it)
             }

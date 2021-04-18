@@ -1,30 +1,44 @@
 package com.example.emergencyhandler.ui
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.emergencyhandler.R
 import com.example.emergencyhandler.data.entity.Call
 import com.example.emergencyhandler.databinding.CallInfoItemBinding
 
 class ShowCallInfoAdapter : ListAdapter<Call, ShowCallInfoAdapter.MyViewHolder>(DIFFCALLBACK) {
 
     class MyViewHolder(
-        private val binding: CallInfoItemBinding
+        private val binding: CallInfoItemBinding,
+        val onClickListener: OnClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            onClickListener.setBinding(binding)
+            binding.container.setOnClickListener(onClickListener)
+        }
+
         fun bind(call: Call) {
             with(binding) {
                 patient.text = call.patientName
                 callerAccount.text = call.callerAccount
                 location.text = call.locationName
-                if (call.status == "呼救中") {
-                    status.setTextColor(Color.RED)
-                } else if (call.status == "已取消") {
-                    status.setTextColor(Color.GRAY)
-                } else if (call.status == "已处理") {
-                    status.setTextColor(Color.BLUE)
+                when (call.status) {
+                    "呼救中" -> {
+                        status.setTextColor(Color.RED)
+                    }
+                    "已取消" -> {
+                        status.setTextColor(Color.GRAY)
+                    }
+                    "已处理" -> {
+                        status.setTextColor(Color.BLUE)
+                    }
                 }
                 status.text = call.status
             }
@@ -42,11 +56,37 @@ class ShowCallInfoAdapter : ListAdapter<Call, ShowCallInfoAdapter.MyViewHolder>(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(MyViewHolder.create(parent))
+        return MyViewHolder(
+            MyViewHolder.create(parent),
+            OnClickListener()
+        )
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.onClickListener.setCall(getItem(position))
+    }
+
+    inner class OnClickListener : View.OnClickListener {
+        private lateinit var binding: CallInfoItemBinding
+        private var call: Call? = null
+
+        fun setCall(call: Call) {
+            this.call = call
+        }
+
+        fun setBinding(binding: CallInfoItemBinding) {
+            this.binding = binding
+        }
+
+        override fun onClick(p0: View?) {
+            Bundle().apply {
+                putString("INFO_ID", call!!.patientId)
+                putString("CALL_ID", call!!.id)
+                binding.root.findNavController()
+                    .navigate(R.id.action_showFragment_to_detailFragment, this)
+            }
+        }
     }
 
 

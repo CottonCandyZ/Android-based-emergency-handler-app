@@ -1,30 +1,36 @@
-package com.example.emergencyhandler.data.local
+package com.example.emergencyhandler.data.local.repository
 
 import cn.leancloud.AVObject
 import cn.leancloud.livequery.AVLiveQueryEventHandler
 import com.example.emergencyhandler.convertAVObjectToCall
 import com.example.emergencyhandler.data.entity.Call
 import com.example.emergencyhandler.data.local.dao.CallDao
-import com.example.emergencyhandler.data.remote.WebService
+import com.example.emergencyhandler.data.remote.CallService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CallRepository @Inject constructor(
     private val callDao: CallDao,
-    private val webService: WebService
+    private val callService: CallService
 ) {
-    init {
-        webService.autoFetchData(object : AVLiveQueryEventHandler() {
+    fun init() {
+        callService.autoFetchData(object : AVLiveQueryEventHandler() {
             override fun onObjectCreated(avObject: AVObject) {
                 super.onObjectCreated(avObject)
-                update(avObject)
+                MainScope().launch {
+                    update(avObject)
+                }
             }
 
             override fun onObjectUpdated(avObject: AVObject, updateKeyList: MutableList<String>?) {
                 super.onObjectUpdated(avObject, updateKeyList)
-                update(avObject)
+                MainScope().launch {
+                    update(avObject)
+                }
             }
 
             override fun onObjectDeleted(objectId: String) {
@@ -37,23 +43,32 @@ class CallRepository @Inject constructor(
         })
     }
 
-    fun update(remote: AVObject) {
-        MainScope().launch {
+    suspend fun update(remote: AVObject) {
+        withContext(Dispatchers.IO) {
             callDao.insertCall(convertAVObjectToCall(remote))
         }
     }
 
     fun getCallInfo(): Flow<List<Call>> {
-        MainScope().launch {
-            refreshAbstractCall()
-        }
         return callDao.getCall()
     }
 
-    private suspend fun refreshAbstractCall() {
-        val list = webService.getCallInfo()
-        callDao.nukeTable()
-        callDao.insertCall(*list.toTypedArray())
+    fun getCallInfoById(id: String): Flow<List<Call>> {
+        return callDao.getCallById(id)
+    }
+
+    suspend fun refreshCall() {
+        withContext(Dispatchers.IO) {
+            val list = callService.getCallInfo()
+            callDao.nukeTable()
+            callDao.insertCall(*list.toTypedArray())
+        }
+    }
+
+    suspend fun checkStatus(callId: String) {
+        withContext(Dispatchers.IO) {
+            callService.checkStatus(callId)
+        }
     }
 
 }
