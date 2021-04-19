@@ -69,6 +69,7 @@ class ShowFragment : Fragment() {
                 }
             }
             myViewModel.call.observe(viewLifecycleOwner) {
+                recyclerView.smoothScrollToPosition(0)
                 showCallInfoAdapter.submitList(it)
             }
         }

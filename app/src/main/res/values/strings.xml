@@ -13,4 +13,6 @@
     <string name="info_add_allergy_hint">过敏反应</string>
     <string name="info_add_medications_hint">用药</string>
     <string name="info_add_address_hint">常住地</string>
+    <string name="channel_name">急救通知</string>
+    <string name="channel_description">当有新的急救请求时的通知</string>
 </resources>
