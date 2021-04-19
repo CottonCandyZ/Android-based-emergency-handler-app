@@ -82,7 +82,8 @@ class ShowInfoAdapter constructor(
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(phone: String, relationship: String) {
-            binding.showInfoEditText.text = "电话：${phone}  关系：${relationship}"
+            binding.showInfoEditText.text = "关系：${relationship}\n" +
+                    "电话：${phone}"
         }
 
         companion object {

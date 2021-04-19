@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.emergencyhandler.R
 import com.example.emergencyhandler.data.entity.Call
 import com.example.emergencyhandler.databinding.CallInfoItemBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ShowCallInfoAdapter : ListAdapter<Call, ShowCallInfoAdapter.MyViewHolder>(DIFFCALLBACK) {
 
@@ -28,7 +30,15 @@ class ShowCallInfoAdapter : ListAdapter<Call, ShowCallInfoAdapter.MyViewHolder>(
             with(binding) {
                 patient.text = call.patientName
                 callerAccount.text = call.callerAccount
-                location.text = call.locationName
+                handler.text = call.handler ?: "尚未处理"
+                createTime.text = convertDateToString(call.createTime)
+                responseTime.text =
+                    if (call.responseTime == null) "尚未处理" else convertDateToString(call.responseTime)
+                if (call.locationCoordinate == null) {
+                    location.text = "尚未获得"
+                } else {
+                    location.text = call.locationName
+                }
                 when (call.status) {
                     "呼救中" -> {
                         status.setTextColor(Color.RED)
@@ -42,6 +52,11 @@ class ShowCallInfoAdapter : ListAdapter<Call, ShowCallInfoAdapter.MyViewHolder>(
                 }
                 status.text = call.status
             }
+        }
+
+        private fun convertDateToString(date: Date): String {
+            val format = "yyyy.MM.dd 'at' HH:mm:ss"
+            return SimpleDateFormat(format, Locale.CHINA).format(date.time)
         }
 
         companion object {
