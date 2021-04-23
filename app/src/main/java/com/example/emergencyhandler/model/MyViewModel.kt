@@ -12,8 +12,8 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val callRepository: CallRepository
 ) : ViewModel() {
-    private val _status = MutableLiveData<STATUS>()
-    val status: LiveData<STATUS> = _status
+    private val _state = MutableLiveData<STATE>()
+    val state: LiveData<STATE> = _state
     lateinit var errorMessage: String
 
 
@@ -31,10 +31,10 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 callRepository.refreshCall()
-                _status.value = STATUS.FETCH_SUCCESS
+                _state.value = STATE.FETCH_SUCCESS
             } catch (e: Exception) {
                 errorMessage = getErrorMessage(e)
-                _status.value = STATUS.FETCH_ERROR
+                _state.value = STATE.FETCH_ERROR
             }
         }
     }
@@ -44,9 +44,9 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 callRepository.refreshCall()
-                _status.value = STATUS.REFRESH_COMPLETE
+                _state.value = STATE.REFRESH_COMPLETE
             } catch (e: Exception) {
-                _status.value = STATUS.REFRESH_ERROR
+                _state.value = STATE.REFRESH_ERROR
             }
 
         }
@@ -56,7 +56,7 @@ class MyViewModel @Inject constructor(
     val call = callRepository.getCallInfo().asLiveData()
 
 
-    enum class STATUS {
+    enum class STATE {
         FETCH_SUCCESS, FETCH_ERROR, REFRESH_COMPLETE, REFRESH_ERROR
     }
 

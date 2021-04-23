@@ -23,14 +23,14 @@ class InfoViewModel @Inject constructor(
     private val infoRepository: InfoRepository,
     private val callRepository: CallRepository
 ) : ViewModel() {
-    enum class STATUS {
+    enum class STATE {
         CHECK_SUCCESS, CHECK_ERROR
     }
 
     lateinit var errorMessage: String
 
-    private val _status = MutableLiveData<STATUS>()
-    val status: LiveData<STATUS> = _status
+    private val _state = MutableLiveData<STATE>()
+    val state: LiveData<STATE> = _state
 
     private val _showInfo = MutableLiveData<InputData>()
     val showInfo: LiveData<InputData> = _showInfo
@@ -80,10 +80,10 @@ class InfoViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 callRepository.checkStatus(call.value!!.id)
-                _status.value = STATUS.CHECK_SUCCESS
+                _state.value = STATE.CHECK_SUCCESS
             } catch (e: Exception) {
                 errorMessage = getErrorMessage(e)
-                _status.value = STATUS.CHECK_ERROR
+                _state.value = STATE.CHECK_ERROR
             }
 
 

@@ -53,12 +53,12 @@ class InfoFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu, menu)
         val check = menu.findItem(R.id.check)
-        infoViewModel.status.observe(viewLifecycleOwner) {
+        infoViewModel.state.observe(viewLifecycleOwner) {
             when (it) {
-                InfoViewModel.STATUS.CHECK_SUCCESS -> {
+                InfoViewModel.STATE.CHECK_SUCCESS -> {
                     showMessage(requireContext(), "处理成功")
                 }
-                InfoViewModel.STATUS.CHECK_ERROR -> {
+                InfoViewModel.STATE.CHECK_ERROR -> {
                     showMessage(requireContext(), infoViewModel.errorMessage)
                     check.isEnabled = true
                 }

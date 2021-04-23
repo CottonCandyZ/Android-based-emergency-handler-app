@@ -50,17 +50,17 @@ class ShowFragment : Fragment() {
                 myViewModel.refreshManually()
             }
 
-            myViewModel.status.observe(viewLifecycleOwner) {
+            myViewModel.state.observe(viewLifecycleOwner) {
                 when (it) {
-                    MyViewModel.STATUS.FETCH_SUCCESS -> {
+                    MyViewModel.STATE.FETCH_SUCCESS -> {
                     }
-                    MyViewModel.STATUS.FETCH_ERROR -> {
+                    MyViewModel.STATE.FETCH_ERROR -> {
                         showMessage(requireContext(), myViewModel.errorMessage)
                     }
-                    MyViewModel.STATUS.REFRESH_COMPLETE -> {
+                    MyViewModel.STATE.REFRESH_COMPLETE -> {
                         swipeRefresh.isRefreshing = false
                     }
-                    MyViewModel.STATUS.REFRESH_ERROR -> {
+                    MyViewModel.STATE.REFRESH_ERROR -> {
                         swipeRefresh.isRefreshing = false
                         showMessage(requireContext(), myViewModel.errorMessage)
                     }
