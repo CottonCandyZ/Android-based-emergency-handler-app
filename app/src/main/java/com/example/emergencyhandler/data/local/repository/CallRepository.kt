@@ -1,7 +1,9 @@
 package com.example.emergencyhandler.data.local.repository
 
+import cn.leancloud.AVException
 import cn.leancloud.AVObject
 import cn.leancloud.livequery.AVLiveQueryEventHandler
+import cn.leancloud.livequery.AVLiveQuerySubscribeCallback
 import com.example.emergencyhandler.convertAVObjectToCall
 import com.example.emergencyhandler.data.entity.Call
 import com.example.emergencyhandler.data.local.dao.CallDao
@@ -18,7 +20,7 @@ class CallRepository @Inject constructor(
     private val callService: CallService
 ) {
     fun init() {
-        callService.autoFetchData(object : AVLiveQueryEventHandler() {
+        callService.callLiveQuery.setEventHandler(object : AVLiveQueryEventHandler() {
             override fun onObjectCreated(avObject: AVObject) {
                 super.onObjectCreated(avObject)
                 MainScope().launch {
@@ -39,6 +41,18 @@ class CallRepository @Inject constructor(
                     callDao.deleteById(objectId)
                 }
 
+            }
+        })
+        callService.callLiveQuery.subscribeInBackground(object : AVLiveQuerySubscribeCallback() {
+            override fun done(e: AVException?) {
+
+            }
+        })
+    }
+
+    fun unsubscribe() {
+        callService.callLiveQuery.unsubscribeInBackground(object : AVLiveQuerySubscribeCallback() {
+            override fun done(e: AVException?) {
             }
         })
     }

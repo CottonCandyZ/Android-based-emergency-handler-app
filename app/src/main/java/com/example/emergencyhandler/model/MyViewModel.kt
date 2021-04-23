@@ -23,11 +23,11 @@ class MyViewModel @Inject constructor(
     }
 
 
-    fun initLiveQuery() {
+    private fun initLiveQuery() {
         callRepository.init()
     }
 
-    fun refresh() {
+    private fun refresh() {
         viewModelScope.launch {
             try {
                 callRepository.refreshCall()
@@ -38,6 +38,7 @@ class MyViewModel @Inject constructor(
             }
         }
     }
+
 
     fun refreshManually() {
         viewModelScope.launch {
@@ -57,5 +58,11 @@ class MyViewModel @Inject constructor(
 
     enum class STATUS {
         FETCH_SUCCESS, FETCH_ERROR, REFRESH_COMPLETE, REFRESH_ERROR
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        callRepository.unsubscribe()
     }
 }

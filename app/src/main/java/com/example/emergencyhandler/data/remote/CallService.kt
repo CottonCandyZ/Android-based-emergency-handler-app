@@ -1,11 +1,8 @@
 package com.example.emergencyhandler.data.remote
 
-import cn.leancloud.AVException
 import cn.leancloud.AVObject
 import cn.leancloud.AVQuery
 import cn.leancloud.livequery.AVLiveQuery
-import cn.leancloud.livequery.AVLiveQueryEventHandler
-import cn.leancloud.livequery.AVLiveQuerySubscribeCallback
 import com.example.emergencyhandler.convertAVObjectToCall
 import com.example.emergencyhandler.data.entity.Call
 import java.util.*
@@ -15,15 +12,12 @@ import javax.inject.Singleton
 
 @Singleton
 class CallService @Inject constructor() {
-    fun autoFetchData(handler: AVLiveQueryEventHandler) {
+    val callLiveQuery: AVLiveQuery
+
+    init {
         val query = AVQuery<AVObject>("Call")
         query.whereNotEqualTo("status", "")
-        val liveQuery = AVLiveQuery.initWithQuery(query)
-        liveQuery.setEventHandler(handler)
-        liveQuery.subscribeInBackground(object : AVLiveQuerySubscribeCallback() {
-            override fun done(e: AVException?) {
-            }
-        })
+        callLiveQuery = AVLiveQuery.initWithQuery(query)
     }
 
     fun getCallInfo(): List<Call> {
