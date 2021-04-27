@@ -14,6 +14,9 @@ interface CallDao {
     fun insertCall(vararg call: Call)
 
 
+    @Query("SELECT * FROM call WHERE status = :filter ORDER BY ID DESC")
+    fun getCallByFilter(filter: String): Flow<List<Call>>
+
     @Query("SELECT * FROM call ORDER BY ID DESC")
     fun getCall(): Flow<List<Call>>
 

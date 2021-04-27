@@ -63,6 +63,10 @@ class CallRepository @Inject constructor(
         }
     }
 
+    fun getCallInfoByFilter(filter: String): Flow<List<Call>> {
+        return callDao.getCallByFilter(filter)
+    }
+
     fun getCallInfo(): Flow<List<Call>> {
         return callDao.getCall()
     }

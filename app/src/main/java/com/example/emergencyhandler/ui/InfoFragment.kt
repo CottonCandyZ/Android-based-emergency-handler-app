@@ -51,7 +51,7 @@ class InfoFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu, menu)
+        inflater.inflate(R.menu.check_menu, menu)
         val check = menu.findItem(R.id.check)
         infoViewModel.state.observe(viewLifecycleOwner) {
             when (it) {

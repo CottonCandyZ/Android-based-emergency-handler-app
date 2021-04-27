@@ -15,4 +15,9 @@
     <string name="info_add_address_hint">常住地</string>
     <string name="channel_name">急救通知</string>
     <string name="channel_description">当有新的急救请求时的通知</string>
+    <string name="filter_calling">呼救中</string>
+    <string name="filter_handled">已处理</string>
+    <string name="filter_canceled">已取消</string>
+    <string name="filter_show_all">显示全部</string>
+    <string name="info_handle_hint">处理</string>
 </resources>

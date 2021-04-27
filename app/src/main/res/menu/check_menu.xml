@@ -4,7 +4,7 @@
     <item
         android:id="@+id/check"
 
-        android:title="处理"
+        android:title="@string/info_handle_hint"
         android:icon="@drawable/ic_baseline_check_24"
         app:showAsAction="always" />
 </menu>

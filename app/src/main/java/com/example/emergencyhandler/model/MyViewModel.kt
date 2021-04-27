@@ -1,9 +1,15 @@
 package com.example.emergencyhandler.model
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.emergencyhandler.data.entity.Call
 import com.example.emergencyhandler.data.local.repository.CallRepository
 import com.example.emergencyhandler.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,14 +20,36 @@ class MyViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableLiveData<STATE>()
     val state: LiveData<STATE> = _state
+    private val _call = MutableLiveData<List<Call>>()
+    val call: LiveData<List<Call>> = _call
     lateinit var errorMessage: String
+    private var callJob: Job
 
 
     init {
         refresh()
         initLiveQuery()
+        callJob = viewModelScope.launch {
+            callRepository.getCallInfo().collect {
+                _call.value = it
+            }
+        }
     }
 
+    fun setFilterStatus(filter: String) {
+        callJob.cancel()
+        callJob = viewModelScope.launch {
+            if (filter == "显示全部") {
+                callRepository.getCallInfo().collect {
+                    _call.value = it
+                }
+            } else {
+                callRepository.getCallInfoByFilter(filter).collect {
+                    _call.value = it
+                }
+            }
+        }
+    }
 
     private fun initLiveQuery() {
         callRepository.init()
@@ -51,9 +79,6 @@ class MyViewModel @Inject constructor(
 
         }
     }
-
-
-    val call = callRepository.getCallInfo().asLiveData()
 
 
     enum class STATE {

@@ -1,13 +1,12 @@
 package com.example.emergencyhandler.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.emergencyhandler.R
 import com.example.emergencyhandler.databinding.FragmentShowBinding
 import com.example.emergencyhandler.model.MyViewModel
 import com.example.emergencyhandler.showMessage
@@ -31,8 +30,20 @@ class ShowFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.filter_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        myViewModel.setFilterStatus(item.title.toString())
+        return super.onOptionsItemSelected(item)
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         val showCallInfoAdapter = ShowCallInfoAdapter()
         with(binding) {
             with(recyclerView) {
@@ -68,6 +79,10 @@ class ShowFragment : Fragment() {
                     }
                 }
             }
+
+
+
+
             myViewModel.call.observe(viewLifecycleOwner) {
                 recyclerView.smoothScrollToPosition(0)
                 showCallInfoAdapter.submitList(it)
