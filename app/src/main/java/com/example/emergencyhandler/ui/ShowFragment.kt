@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.emergencyhandler.R
@@ -32,10 +33,14 @@ class ShowFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.filter_menu, menu)
+        inflater.inflate(R.menu.info_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.statistic) {
+            findNavController().navigate(R.id.action_showFragment_to_statisticFragment)
+            return super.onOptionsItemSelected(item)
+        }
         myViewModel.setFilterStatus(item.title.toString())
         return super.onOptionsItemSelected(item)
     }

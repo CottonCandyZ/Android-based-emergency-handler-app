@@ -28,6 +28,11 @@ interface CallDao {
     fun getCallById(id: String): Flow<List<Call>>
 
 
+    @Query(
+        "SELECT COUNT(*) FROM call WHERE status = '已处理' and responseTime >= :start and responseTime <= :end"
+    )
+    fun getCallNumber(start: Long, end: Long): Int
+
     @Query("DELETE FROM call")
     fun nukeTable()
 }

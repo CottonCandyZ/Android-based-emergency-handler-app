@@ -13,9 +13,17 @@
         <action
             android:id="@+id/action_showFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_showFragment_to_statisticFragment"
+            app:destination="@id/statisticFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.emergencyhandler.ui.InfoFragment"
         android:label="详细信息" />
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.example.emergencyhandler.ui.StatisticFragment"
+        android:label="统计"
+        tools:layout="@layout/fragment_statistic" />
 </navigation>

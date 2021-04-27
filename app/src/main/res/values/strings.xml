@@ -20,4 +20,13 @@
     <string name="filter_canceled">已取消</string>
     <string name="filter_show_all">显示全部</string>
     <string name="info_handle_hint">处理</string>
+    <string name="statistic_button_hint">统计</string>
+    <string name="statistic_preset_hint">预设</string>
+    <string name="statistic_handled_number_hint">已处理呼救数</string>
+    <string name="statistic_preset_today_button_hint">今日</string>
+    <string name="statistic_preset_week_button_hint">本周</string>
+    <string name="statistic_preset_month_button_hint">本月</string>
+    <string name="statistic_preset_year_button_hint">今年</string>
+    <string name="statistic_number_default_value">0</string>
+    <string name="statistic_custom_button_hint">自定义日期跨度</string>
 </resources>
