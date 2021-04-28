@@ -98,7 +98,7 @@ class StatisticFragment : Fragment() {
     }
 
     private fun convertDateToString(time: Long): String {
-        val format = "yyyy.MM.dd hh"
+        val format = "yyyy.MM.dd"
         return SimpleDateFormat(format, Locale.CHINA).format(time)
     }
 }
