@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         AVInstallation.getCurrentInstallation().saveInBackground()
-        PushService.setDefaultPushCallback(this, MainActivity::class.java)
-        PushService.subscribe(this, "emergency", MainActivity::class.java)
+//        PushService.setDefaultPushCallback(this, MainActivity::class.java)
+        PushService.subscribe(this, "emergency", PushCallBackActivity::class.java)
 
 
         // enable dataBinding

@@ -112,7 +112,7 @@ class CallRepository @Inject constructor(
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.MILLISECOND, 0)
         val start = calendar.timeInMillis
-        calendar.add(Calendar.DATE, -dayOfWeek + 7)
+        calendar.add(Calendar.DATE, 6)
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.SECOND, 59)
         calendar.set(Calendar.MINUTE, 59)
