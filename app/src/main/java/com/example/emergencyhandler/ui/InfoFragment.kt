@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amap.api.maps.model.LatLng
@@ -83,8 +84,6 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         infoViewModel.call.observe(viewLifecycleOwner) {
             with(binding) {
                 patient.text = it.patientName
@@ -95,9 +94,9 @@ class InfoFragment : Fragment() {
                     if (it.responseTime == null) "尚未处理" else convertDateToString(it.responseTime)
                 if (it.locationCoordinate == null) {
                     location.text = "尚未获得"
-                    binding.floatingActionButton.isEnabled = false
+                    binding.navigationFAB.hide()
                 } else {
-                    binding.floatingActionButton.isEnabled = true
+                    binding.navigationFAB.show()
                     location.text = it.locationName
                 }
 
@@ -137,7 +136,7 @@ class InfoFragment : Fragment() {
                 it.emergencyNumber
             )
         }
-        binding.floatingActionButton.setOnClickListener {
+        binding.navigationFAB.setOnClickListener {
             val positionName = infoViewModel.call.value!!.locationName
             val position = infoViewModel.call.value!!.locationCoordinate!!.split(" ")
             val longitude = position[0].toDouble()
@@ -148,7 +147,13 @@ class InfoFragment : Fragment() {
             AmapNaviPage.getInstance()
                 .showRouteActivity(requireActivity().applicationContext, params, null)
         }
+        binding.callFAB.setOnClickListener {
+            Bundle().apply {
+                putParcelableArrayList("CALL_LIST", infoViewModel.callList)
+                findNavController().navigate(R.id.action_detailFragment_to_callFragment, this)
+            }
 
+        }
 
 
 

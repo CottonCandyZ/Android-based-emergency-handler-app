@@ -20,10 +20,18 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.emergencyhandler.ui.InfoFragment"
-        android:label="详细信息" />
+        android:label="详细信息">
+        <action
+            android:id="@+id/action_detailFragment_to_callFragment"
+            app:destination="@id/callFragment" />
+    </fragment>
     <fragment
         android:id="@+id/statisticFragment"
         android:name="com.example.emergencyhandler.ui.StatisticFragment"
         android:label="统计"
         tools:layout="@layout/fragment_statistic" />
+    <fragment
+        android:id="@+id/callFragment"
+        android:name="com.example.emergencyhandler.ui.CallFragment"
+        android:label="联系" />
 </navigation>

@@ -34,6 +34,7 @@ class CallService @Inject constructor() {
         val changeItem = AVObject.createWithoutData("Call", callId)
         changeItem.put("status", "已处理")
         changeItem.put("handler", "CottonCandyZ")
+        changeItem.put("handlerPhone", "144")
         changeItem.put("responseTime", Calendar.getInstance().time)
         changeItem.save()
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.emergencyhandler.data.entity.Call
+import com.example.emergencyhandler.data.entity.CallPhone
 import com.example.emergencyhandler.data.entity.EmergencyContact
 import com.example.emergencyhandler.data.local.repository.CallRepository
 import com.example.emergencyhandler.data.local.repository.InfoRepository
@@ -38,6 +39,11 @@ class InfoViewModel @Inject constructor(
     private val _call = MutableLiveData<Call>()
     val call: LiveData<Call> = _call
 
+    val callList = arrayListOf<CallPhone>(
+        CallPhone("", "呼救账户"),
+        CallPhone("", "呼救人")
+    )
+
     fun fetchInfo(infoId: String) {
         viewModelScope.launch {
             val inputData = InputData(Array(11) { "" }, arrayListOf())
@@ -58,11 +64,16 @@ class InfoViewModel @Inject constructor(
                     inputInfo[ALLERGY] = allergy ?: ""
                     inputInfo[MEDICATIONS] = medications ?: ""
                     inputInfo[ADDRESS] = address ?: ""
+                    callList[1].phone = "+86$phone"
                 }
             }
             val emergencyContacts = result.emergencyContacts
+            val add = callList.size <= 2
             emergencyContacts.forEach {
                 inputData.emergencyNumber.add(it)
+                if (add) {
+                    callList.add(CallPhone("+86${it.phone}", "呼救人的${it.relationship}"))
+                }
             }
             _showInfo.value = inputData
         }
@@ -72,6 +83,7 @@ class InfoViewModel @Inject constructor(
         viewModelScope.launch {
             callRepository.getCallInfoById(callId).collect {
                 _call.value = it[0]
+                callList[0].phone = it[0].callerAccount
             }
         }
     }
