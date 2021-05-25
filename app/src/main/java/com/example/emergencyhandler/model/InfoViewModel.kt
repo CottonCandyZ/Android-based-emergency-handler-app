@@ -55,7 +55,10 @@ class InfoViewModel @Inject constructor(
                     inputInfo[REAL_NAME] = realName
                     inputInfo[SEX] = sex ?: ""
                     inputInfo[BIRTHDATE] =
-                        SimpleDateFormat("yyyy/MM/dd", Locale.CHINA).format(birthdate)
+                        SimpleDateFormat(
+                            "yyyy/MM/dd",
+                            Locale.CHINA
+                        ).format(birthdate) + "（年龄：${getAge(birthdate)}）"
                     inputInfo[PHONE] = phone
                     inputInfo[WEIGHT] = weight?.toString() ?: ""
                     inputInfo[BLOOD_TYPE] = bloodType ?: ""
@@ -100,6 +103,20 @@ class InfoViewModel @Inject constructor(
 
 
         }
+    }
+
+    private fun getAge(birthday: Date): Int {
+        val now = Calendar.getInstance()
+        val born = Calendar.getInstance()
+        now.timeZone = TimeZone.getTimeZone("GMT+8:00")
+        born.timeZone = TimeZone.getTimeZone("GMT+8:00")
+        now.time = Date()
+        born.time = birthday
+        var age = now[Calendar.YEAR] - born[Calendar.YEAR]
+        if (now[Calendar.DAY_OF_YEAR] < born[Calendar.DAY_OF_YEAR]) {
+            age -= 1
+        }
+        return age
     }
 
     class InputData(
